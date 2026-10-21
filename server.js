@@ -24,11 +24,29 @@ app.use(express.static(join(__dirname, 'public')));
 // API Routes
 app.use('/api/dreams', dreamsRouter);
 
+app.get('/health'), async (req, res) => {
+  try{
+    await pool.query('SELECT 1')
+    res.json({
+      status: 'ok',
+      db: 'connected',
+      uptime: process.uptime()
+    })
+
+  }catch(err){
+    res.status(503).json({
+      status: 'error',
+      db: 'disconnected',
+      uptime: process.uptime()
+    })
+  }
+}
+
 // Initialize database then start server
-initDatabase().then(() => {
+// initDatabase().then(() => {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
-}).catch(error => {
-  console.error('Failed to initialize database:', error);
-});
+// }).catch(error => {
+//   console.error('Failed to initialize database:', error);
+// });
