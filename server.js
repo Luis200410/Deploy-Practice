@@ -24,7 +24,7 @@ app.use(express.static(join(__dirname, 'public')));
 // API Routes
 app.use('/api/dreams', dreamsRouter);
 
-app.get('/health'), async (req, res) => {
+app.get('/health', async (req, res) => {
   try{
     await pool.query('SELECT 1')
     res.json({
@@ -40,7 +40,7 @@ app.get('/health'), async (req, res) => {
       uptime: process.uptime()
     })
   }
-}
+})
 
 // Initialize database then start server
 // initDatabase().then(() => {
